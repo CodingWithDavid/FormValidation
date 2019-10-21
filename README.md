@@ -1,4 +1,4 @@
-# Blazor Components
+# Blazor Form Validation
 
 This project was created to help me learn about form validation in a Blazor Application.  I also added in navigating to other pages from C# code.
 
