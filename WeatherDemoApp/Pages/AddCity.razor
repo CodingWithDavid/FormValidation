@@ -4,6 +4,7 @@
 
 @inject Services.CityWeatherService service
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsInterop
 
 <h1>@title</h1>
 
@@ -21,7 +22,7 @@
 
     <p>
         <label for="city">City: </label>
-        <InputText id="city" @bind-Value="city.City" />
+        <InputText id="city" @bind-Value="city.City" class="defaultFocus" />
         @*<ValidationMessage For="@(() => city.City)" />*@
     </p>
     <p>
@@ -59,15 +60,16 @@
     private CityWeatherInfo city = new CityWeatherInfo();
     string error = "";
     string title = "Add City Weather";
+    bool isAutofocus = true;
 
     private async Task HandleValidSubmit()
     {
-            error = await service.AddAsync(city);
-            if (string.IsNullOrEmpty(error))
-            {
-                //go back to the list page
-                NavigationManager.NavigateTo("CityWeather");
-            }
+        error = await service.AddAsync(city);
+        if (string.IsNullOrEmpty(error))
+        {
+            //go back to the list page
+            NavigationManager.NavigateTo("CityWeather");
+        }
     }
 
     private void CancelAction()
@@ -75,4 +77,15 @@
         //go back to the list page
         NavigationManager.NavigateTo("CityWeather");
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await JsInterop.InvokeVoidAsync("focusInputFromBlazor", new[] { ".defaultFocus" });
+        }
+    }
+
 }

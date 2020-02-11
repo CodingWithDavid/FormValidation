@@ -20,5 +20,7 @@ namespace WeatherDemoApp.Data
 
         [Required]
         public string FeelsLike { get; set; }
+
+        public bool AutoFocus { get; set; }
     }
 }
